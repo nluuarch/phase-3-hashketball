@@ -1,4 +1,6 @@
 # Write your code below game_hash
+require 'pry'
+
 def game_hash
   {
     home: {
@@ -126,4 +128,87 @@ def game_hash
   }
 end
 
-# Write code here
+
+def num_points_scored(player)
+  filtered_player = []
+  game_hash.each do |team, data|
+    data.each do |attribute, value|
+      if attribute == :players
+        add_player = value.find do |name| 
+          name[:player_name] == player
+        end
+        add_player ? filtered_player << add_player : nil
+      end
+    end
+  end
+  filtered_player[0][:points]
+end
+
+
+def shoe_size(player)
+  found_player = []
+  game_hash.each do |team, data|
+    data.each do |attribute, value|
+      if attribute == :players
+        pro = value.find do |name| 
+          name[:player_name] == player
+        end
+        pro ? found_player << pro : nil
+      end
+    end
+  end
+  found_player[0][:shoe]
+end
+
+
+def team_colors(team)
+  filtered_team = []
+  game_hash.each do |homeaway, data|
+    if data[:team_name] == team
+      filtered_team << data[:colors]
+    end
+  end
+  filtered_team[0]
+end
+
+
+def team_names
+  game_hash.values.map {|v| v[:team_name]}
+end
+
+
+def player_numbers(name_of_team)
+  game_hash.each do |team, data|
+    if data[:team_name] == name_of_team
+      return data[:players].map {|p| p[:number]}
+    end
+  end
+end
+
+def player_stats(player)
+  found_player = []
+  game_hash.each do |team, data|
+    data.each do |attribute, value|
+      if attribute == :players
+        pro = value.find do |name| 
+          name[:player_name] == player
+        end
+        pro ? found_player << pro : nil
+      end
+    end
+  end
+  found_player[0]
+end
+
+
+def big_shoe_rebounds
+  player = []
+  game_hash.each do |team, data|
+    binding.pry
+    player << data[:players].sort do |player1, player2|
+      player2[:shoe] <=> player1[:shoe]
+    end
+  end
+  player[0][0][:rebounds]
+end
+
